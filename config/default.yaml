@@ -1,0 +1,12 @@
+server:
+  http:
+    port: 9000
+
+mysql:
+  address: localhost:3306
+  database: mfv
+  username: root
+  password: secret
+  protocol: tcp
+  parse_time: true
+  log_level: SILENT

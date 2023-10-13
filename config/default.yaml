@@ -1,6 +1,6 @@
 server:
   http:
-    port: 9000
+    port: 9090
 
 mysql:
   address: localhost:3306

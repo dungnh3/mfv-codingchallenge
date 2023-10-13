@@ -6,11 +6,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/dungnh3/mfv-codingchallenge/docs"
 
 	"github.com/dungnh3/mfv-codingchallenge/config"
 	"github.com/dungnh3/mfv-codingchallenge/internal/repositories"
 	l "github.com/dungnh3/mfv-codingchallenge/pkg/log"
+	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
 
@@ -45,12 +48,15 @@ func New(cfg *config.Config, r repositories.Repository) *Server {
 	router.GET("/health", s.healthCheck)
 	router.GET("/live", s.liveCheck)
 
+	docs.SwaggerInfo.BasePath = ""
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
 	usersRouter := router.Group("/users")
 	{
 		v1 := usersRouter.Group("/") // consider using api version in here -> /api/v1
 		{
-			v1.GET("/:id", s.healthCheck)
-			v1.GET("/:id/accounts", s.healthCheck)
+			v1.GET("/:id", s.getUser)
+			v1.GET("/:id/accounts", s.listUserAccounts)
 		}
 	}
 
@@ -59,7 +65,7 @@ func New(cfg *config.Config, r repositories.Repository) *Server {
 		{
 			v1 := accountsRouter.Group("/") // consider using api version in here -> /api/v1
 			{
-				v1.GET("/:id", s.healthCheck)
+				v1.GET("/:id", s.getAccount)
 			}
 		}
 	}

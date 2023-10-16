@@ -53,21 +53,15 @@ func New(cfg *config.Config, r repositories.Repository) *Server {
 
 	usersRouter := router.Group("/users")
 	{
-		v1 := usersRouter.Group("/") // consider using api version in here -> /api/v1
-		{
-			v1.GET("/:id", s.getUser)
-			v1.GET("/:id/accounts", s.listUserAccounts)
-		}
+		usersRouter.POST("/register", s.registerUser)
+		usersRouter.GET("/:id", s.getUser)
+		usersRouter.POST("/:id/accounts", s.createAccount)
+		usersRouter.GET("/:id/accounts", s.listUserAccounts)
 	}
 
 	accountsRouter := router.Group("/accounts")
 	{
-		{
-			v1 := accountsRouter.Group("/") // consider using api version in here -> /api/v1
-			{
-				v1.GET("/:id", s.getAccount)
-			}
-		}
+		accountsRouter.GET("/:id", s.getAccount)
 	}
 	return s
 }

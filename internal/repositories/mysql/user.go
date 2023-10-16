@@ -19,20 +19,20 @@ func (q *Queries) UpsertUser(ctx context.Context, user *models.User) error {
 			"status":     user.Status,
 			"updated_at": time.Now(),
 		}),
-	}).Create(user).Error
+	}).Create(user.User).Error
 }
 
-func (q *Queries) UpsertUserAccount(ctx context.Context, userAccount *models.UserAccount) error {
+func (q *Queries) UpsertUserAccount(ctx context.Context, acc *models.UserAccount) error {
 	return q.db.WithContext(ctx).Clauses(clause.OnConflict{
 		Columns: []clause.Column{
 			{Name: "id"},
 		},
 		DoUpdates: clause.Assignments(map[string]interface{}{
-			"name":       userAccount.Name,
-			"status":     userAccount.Status,
+			"name":       acc.Name,
+			"status":     acc.Status,
 			"updated_at": time.Now(),
 		}),
-	}).Create(userAccount).Error
+	}).Create(acc.UserAccount).Error
 }
 
 const getUserQuery = `

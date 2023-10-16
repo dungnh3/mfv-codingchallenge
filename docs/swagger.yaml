@@ -1,20 +1,19 @@
 definitions:
-  models.User:
+  services.createAccountRequest:
     properties:
-      account_ids:
-        items:
-          type: integer
-        type: array
-      created_at:
+      name:
         type: string
+    required:
+    - name
+    type: object
+  services.createAccountResponse:
+    properties:
       id:
         type: integer
       name:
         type: string
-      status:
-        type: string
-      updated_at:
-        type: string
+      user_id:
+        type: integer
     type: object
   services.getAccountResponse:
     properties:
@@ -26,6 +25,31 @@ definitions:
         type: string
       user_id:
         type: integer
+    type: object
+  services.getUserResponse:
+    properties:
+      account_ids:
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  services.registerUserRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  services.registerUserResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
     type: object
 info:
   contact: {}
@@ -51,6 +75,28 @@ paths:
       summary: get account information
       tags:
       - Accounts
+  /users/:id/accounts:
+    post:
+      consumes:
+      - application/json
+      description: create new account of user
+      parameters:
+      - description: create a new account
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/services.createAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.createAccountResponse'
+      summary: create new account of user
+      tags:
+      - Users
   /users/{id}:
     get:
       consumes:
@@ -68,7 +114,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/services.getUserResponse'
       summary: get user information
       tags:
       - Users
@@ -93,6 +139,28 @@ paths:
               $ref: '#/definitions/services.getAccountResponse'
             type: array
       summary: list user account information
+      tags:
+      - Users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: register new user
+      parameters:
+      - description: register a new user
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/services.registerUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/services.registerUserResponse'
+      summary: register new user
       tags:
       - Users
 swagger: "2.0"

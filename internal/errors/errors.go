@@ -1,4 +1,4 @@
-package errorz
+package errors
 
 import (
 	"errors"

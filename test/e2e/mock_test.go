@@ -78,7 +78,7 @@ func (s *MockTestSuite) Test_GetUser_Success() {
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 
-	var user models.User
+	var user services.GetUserResponse
 	err = json.Unmarshal(body, &user)
 	s.Require().NoError(err)
 
@@ -115,7 +115,7 @@ func (s *MockTestSuite) Test_GetAccount_Success() {
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 
-	var acc models.UserAccount
+	var acc services.GetAccountResponse
 	err = json.Unmarshal(body, &acc)
 	s.Require().NoError(err)
 
@@ -161,10 +161,9 @@ func (s *MockTestSuite) Test_ListUserAccount_Success() {
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 
-	var arrResponse []*models.UserAccount
+	var arrResponse []*services.GetAccountResponse
 	err = json.Unmarshal(body, &arrResponse)
 	s.Require().NoError(err)
-
 	s.EqualValues(len(arrResponse), 2)
 }
 
@@ -183,7 +182,6 @@ func (s *MockTestSuite) Test_ListUserAccount_Failed() {
 	var errResponse errorz.ErrResponse
 	err = json.Unmarshal(body, &errResponse)
 	s.Require().NoError(err)
-
 	s.EqualValues(10001, errResponse.ErrorCode)
 	s.EqualValues("record not found", errResponse.Description)
 }

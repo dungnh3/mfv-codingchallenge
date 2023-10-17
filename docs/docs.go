@@ -41,7 +41,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.getAccountResponse"
+                            "$ref": "#/definitions/services.GetAccountResponse"
                         }
                     }
                 }
@@ -141,7 +141,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.getUserResponse"
+                            "$ref": "#/definitions/services.GetUserResponse"
                         }
                     }
                 }
@@ -175,7 +175,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/services.getAccountResponse"
+                                "$ref": "#/definitions/services.GetAccountResponse"
                             }
                         }
                     }
@@ -209,29 +209,7 @@ const docTemplate = `{
                 }
             }
         },
-        "services.RegisterUserRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "services.RegisterUserResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "services.getAccountResponse": {
+        "services.GetAccountResponse": {
             "type": "object",
             "properties": {
                 "balance": {
@@ -248,7 +226,7 @@ const docTemplate = `{
                 }
             }
         },
-        "services.getUserResponse": {
+        "services.GetUserResponse": {
             "type": "object",
             "properties": {
                 "account_ids": {
@@ -257,6 +235,28 @@ const docTemplate = `{
                         "type": "integer"
                     }
                 },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.RegisterUserRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.RegisterUserResponse": {
+            "type": "object",
+            "properties": {
                 "id": {
                     "type": "integer"
                 },

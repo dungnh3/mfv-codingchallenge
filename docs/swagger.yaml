@@ -15,21 +15,7 @@ definitions:
       user_id:
         type: integer
     type: object
-  services.RegisterUserRequest:
-    properties:
-      name:
-        type: string
-    required:
-    - name
-    type: object
-  services.RegisterUserResponse:
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-    type: object
-  services.getAccountResponse:
+  services.GetAccountResponse:
     properties:
       balance:
         type: number
@@ -40,12 +26,26 @@ definitions:
       user_id:
         type: integer
     type: object
-  services.getUserResponse:
+  services.GetUserResponse:
     properties:
       account_ids:
         items:
           type: integer
         type: array
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  services.RegisterUserRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  services.RegisterUserResponse:
+    properties:
       id:
         type: integer
       name:
@@ -71,7 +71,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/services.getAccountResponse'
+            $ref: '#/definitions/services.GetAccountResponse'
       summary: get account information
       tags:
       - Accounts
@@ -114,7 +114,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/services.getUserResponse'
+            $ref: '#/definitions/services.GetUserResponse'
       summary: get user information
       tags:
       - Users
@@ -136,7 +136,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/services.getAccountResponse'
+              $ref: '#/definitions/services.GetAccountResponse'
             type: array
       summary: list user account information
       tags:

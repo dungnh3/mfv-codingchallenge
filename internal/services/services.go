@@ -57,7 +57,7 @@ func (s *Server) registerUser(ctx *gin.Context) {
 }
 
 type (
-	getUserResponse struct {
+	GetUserResponse struct {
 		ID         int64   `json:"id"`
 		Name       string  `json:"name"`
 		AccountIDs []int64 `json:"account_ids"`
@@ -70,7 +70,7 @@ type (
 // @Accept json
 // @Produce json
 // @Param id path int true "user_id"
-// @Success 200 {object} getUserResponse
+// @Success 200 {object} GetUserResponse
 // @Router /users/{id} [get]
 func (s *Server) getUser(ctx *gin.Context) {
 	id, err := getIDFromPath(ctx)
@@ -147,7 +147,7 @@ func (s *Server) createAccount(ctx *gin.Context) {
 }
 
 type (
-	getAccountResponse struct {
+	GetAccountResponse struct {
 		ID      int64   `json:"id"`
 		UserID  int64   `json:"user_id"`
 		Name    string  `json:"name"`
@@ -161,7 +161,7 @@ type (
 // @Accept json
 // @Produce json
 // @Param id path int true "account_id"
-// @Success 200 {object} getAccountResponse
+// @Success 200 {object} GetAccountResponse
 // @Router /accounts/{id} [get]
 func (s *Server) getAccount(ctx *gin.Context) {
 	id, err := getIDFromPath(ctx)
@@ -187,7 +187,7 @@ func (s *Server) getAccount(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "user_id"
-// @Success 200 {object} []getAccountResponse
+// @Success 200 {object} []GetAccountResponse
 // @Router /users/{id}/accounts [get]
 func (s *Server) listUserAccounts(ctx *gin.Context) {
 	id, err := getIDFromPath(ctx)

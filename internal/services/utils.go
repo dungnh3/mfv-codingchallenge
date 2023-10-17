@@ -31,8 +31,8 @@ func formatListResponse[V, T any](arr []V, fn func(V) T) (results []T) {
 	return
 }
 
-func formatAccountResponse(acc *models.UserAccount) getAccountResponse {
-	return getAccountResponse{
+func formatAccountResponse(acc *models.UserAccount) GetAccountResponse {
+	return GetAccountResponse{
 		ID:      acc.ID,
 		UserID:  acc.UserID,
 		Name:    acc.Name,
@@ -40,8 +40,8 @@ func formatAccountResponse(acc *models.UserAccount) getAccountResponse {
 	}
 }
 
-func formatUserResponse(u *models.User) getUserResponse {
-	return getUserResponse{
+func formatUserResponse(u *models.User) GetUserResponse {
+	return GetUserResponse{
 		ID:         u.ID,
 		Name:       u.Name,
 		AccountIDs: u.AccountIDs,

@@ -9,8 +9,6 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/dungnh3/mfv-codingchallenge/internal/models"
-
 	"github.com/dungnh3/mfv-codingchallenge/config"
 	"github.com/dungnh3/mfv-codingchallenge/internal/repositories"
 	"github.com/dungnh3/mfv-codingchallenge/internal/repositories/mysql"
@@ -121,7 +119,7 @@ func (s *E2ETestSuite) Test_03_GetUser_Success() {
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 
-	var user models.User
+	var user services.GetUserResponse
 	err = json.Unmarshal(body, &user)
 	s.Require().NoError(err)
 
@@ -149,7 +147,7 @@ func (s *E2ETestSuite) Test_04_ListUserAccount_Success() {
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 
-	var arr []*models.UserAccount
+	var arr []*services.GetAccountResponse
 	err = json.Unmarshal(body, &arr)
 	s.Require().NoError(err)
 
@@ -180,7 +178,7 @@ func (s *E2ETestSuite) Test_05_GetAccount_Success() {
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 
-	var acc models.UserAccount
+	var acc services.GetAccountResponse
 	err = json.Unmarshal(body, &acc)
 	s.Require().NoError(err)
 

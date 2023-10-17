@@ -23,6 +23,12 @@ Coding Challenge
 - [Makefile GNU](https://www.gnu.org/software/make/manual/make.html)
 
 ## Usage
+### Initialize database
+Use the following command to init an instance database, and create tables
+```bash
+make init-db
+make migrate-up
+```
 ### Starting the Server
 To start the SampleService Server, use the following command:
 ```bash

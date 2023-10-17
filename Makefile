@@ -49,7 +49,7 @@ create-db:
 	docker run --rm -d --name database -p 3306:3306 -e MYSQL_ROOT_PASSWORD=secret mysql:8.0.31 || true
 .PHONY: create-db
 
-init-db:
+init-db: create-db
 	docker exec -it database mysql -u root -psecret -e "CREATE DATABASE mfv;" || true
 .PHONY: init-db
 

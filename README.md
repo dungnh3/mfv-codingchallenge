@@ -29,6 +29,9 @@ Use the following command to init an instance database, and create tables
 make init-db
 make migrate-up
 ```
+- MySQL as our database, the schema will be stored in [migrations](migrations)
+- We use [migrate](#https://github.com/golang-migrate/migrate/blob/master/GETTING_STARTED.md) read migrations from sources and apply them in correct order to a database.
+
 ### Starting the Server
 To start the SampleService Server, use the following command:
 ```bash

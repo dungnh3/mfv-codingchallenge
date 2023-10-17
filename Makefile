@@ -63,6 +63,6 @@ stop-test-db:
 .PHONY: stop-test-db
 
 waiting-start-container:
-	echo "waiting start mysql container"
+	echo "waiting init mysql container"
 	sleep 10
 .PHONY: waiting-start-container

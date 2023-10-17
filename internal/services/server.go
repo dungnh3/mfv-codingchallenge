@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/dungnh3/mfv-codingchallenge/internal/middleware"
+
 	"github.com/dungnh3/mfv-codingchallenge/docs"
 
 	"github.com/dungnh3/mfv-codingchallenge/config"
@@ -51,6 +53,7 @@ func New(cfg *config.Config, r repositories.Repository) *Server {
 	docs.SwaggerInfo.BasePath = ""
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
+	router.Use(middleware.Auth)
 	usersRouter := router.Group("/users")
 	{
 		usersRouter.POST("/register", s.registerUser)

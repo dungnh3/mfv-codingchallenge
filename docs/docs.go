@@ -67,7 +67,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/services.createAccountRequest"
+                            "$ref": "#/definitions/services.CreateAccountRequest"
                         }
                     }
                 ],
@@ -75,7 +75,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.createAccountResponse"
+                            "$ref": "#/definitions/services.CreateAccountResponse"
                         }
                     }
                 }
@@ -101,7 +101,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/services.registerUserRequest"
+                            "$ref": "#/definitions/services.RegisterUserRequest"
                         }
                     }
                 ],
@@ -109,7 +109,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/services.registerUserResponse"
+                            "$ref": "#/definitions/services.RegisterUserResponse"
                         }
                     }
                 }
@@ -184,7 +184,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "services.createAccountRequest": {
+        "services.CreateAccountRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -195,7 +195,7 @@ const docTemplate = `{
                 }
             }
         },
-        "services.createAccountResponse": {
+        "services.CreateAccountResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -206,6 +206,28 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "services.RegisterUserRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "services.RegisterUserResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -235,28 +257,6 @@ const docTemplate = `{
                         "type": "integer"
                     }
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "services.registerUserRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "services.registerUserResponse": {
-            "type": "object",
-            "properties": {
                 "id": {
                     "type": "integer"
                 },

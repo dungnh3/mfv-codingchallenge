@@ -7,25 +7,23 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/dungnh3/mfv-codingchallenge/internal/models/store"
+	errorz "github.com/dungnh3/mfv-codingchallenge/internal/errors"
 
-	"github.com/dungnh3/mfv-codingchallenge/internal/models"
-
-	"github.com/stretchr/testify/mock"
-
-	mocks "github.com/dungnh3/mfv-codingchallenge/internal/mocks/repositories"
+	"gorm.io/gorm"
 
 	"github.com/dungnh3/mfv-codingchallenge/config"
-
+	mocks "github.com/dungnh3/mfv-codingchallenge/internal/mocks/repositories"
+	"github.com/dungnh3/mfv-codingchallenge/internal/models"
+	"github.com/dungnh3/mfv-codingchallenge/internal/models/store"
 	"github.com/dungnh3/mfv-codingchallenge/internal/services"
 	l "github.com/dungnh3/mfv-codingchallenge/pkg/log"
-
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
 
 const host = "http://localhost:9090"
 
-func genURI(path string) string {
+func GenURI(path string) string {
 	return host + path
 }
 
@@ -35,7 +33,7 @@ type MockTestSuite struct {
 	r   *mocks.Repository
 }
 
-func TestE2EMock(t *testing.T) {
+func TestMock(t *testing.T) {
 	suite.Run(t, &MockTestSuite{})
 }
 
@@ -73,7 +71,7 @@ func (s *MockTestSuite) Test_GetUser_Success() {
 		}, nil).Once()
 
 	client := http.Client{}
-	req, err := http.NewRequest(http.MethodGet, genURI("/users/1"), nil)
+	req, err := http.NewRequest(http.MethodGet, GenURI("/users/1"), nil)
 	s.Require().NoError(err)
 	resp, err := client.Do(req)
 	s.Require().NoError(err)
@@ -89,9 +87,9 @@ func (s *MockTestSuite) Test_GetUser_Success() {
 	s.EqualValues([]int64{1, 2, 3}, user.AccountIDs)
 }
 
-func (s *MockTestSuite) Test_GetUser_BadRequest() {
+func (s *MockTestSuite) Test_GetUser_Failed() {
 	client := http.Client{}
-	req, err := http.NewRequest(http.MethodGet, genURI("/users/abc"), nil)
+	req, err := http.NewRequest(http.MethodGet, GenURI("/users/abc"), nil)
 	s.Require().NoError(err)
 	resp, err := client.Do(req)
 	s.NotEqualValues(http.StatusOK, resp.StatusCode)
@@ -110,7 +108,7 @@ func (s *MockTestSuite) Test_GetAccount_Success() {
 		}, nil).Once()
 
 	client := http.Client{}
-	req, err := http.NewRequest(http.MethodGet, genURI("/accounts/1"), nil)
+	req, err := http.NewRequest(http.MethodGet, GenURI("/accounts/1"), nil)
 	s.Require().NoError(err)
 	resp, err := client.Do(req)
 	s.Require().NoError(err)
@@ -127,40 +125,65 @@ func (s *MockTestSuite) Test_GetAccount_Success() {
 	s.EqualValues(2000, acc.Balance)
 }
 
-func (s *MockTestSuite) Test_GetAccount_BadRequest() {
+func (s *MockTestSuite) Test_GetAccount_Failed() {
 	client := http.Client{}
-	req, err := http.NewRequest(http.MethodGet, genURI("/accounts/a"), nil)
+	req, err := http.NewRequest(http.MethodGet, GenURI("/accounts/a"), nil)
 	s.Require().NoError(err)
 	resp, err := client.Do(req)
 	s.NotEqualValues(http.StatusOK, resp.StatusCode)
 }
 
 func (s *MockTestSuite) Test_ListUserAccount_Success() {
-	s.r.On("GetAccount", mock.Anything, mock.Anything).
-		Return(&models.UserAccount{
+	arr := []*models.UserAccount{
+		{
 			UserAccount: &store.UserAccount{
 				ID:      1,
 				UserID:  1,
 				Name:    "account01",
-				Status:  "active",
-				Balance: 2000,
+				Balance: 100,
 			},
-		}, nil).Once()
+		}, {
+			UserAccount: &store.UserAccount{
+				ID:      2,
+				UserID:  1,
+				Name:    "account01",
+				Balance: 200,
+			},
+		},
+	}
+	s.r.On("ListAccounts", mock.Anything, mock.Anything).Return(arr, nil).Once()
 
 	client := http.Client{}
-	req, err := http.NewRequest(http.MethodGet, genURI("/accounts/1"), nil)
+	req, err := http.NewRequest(http.MethodGet, GenURI("/users/1/accounts"), nil)
 	s.Require().NoError(err)
 	resp, err := client.Do(req)
 	s.Require().NoError(err)
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
 
-	var acc models.UserAccount
-	err = json.Unmarshal(body, &acc)
+	var arrResponse []*models.UserAccount
+	err = json.Unmarshal(body, &arrResponse)
 	s.Require().NoError(err)
 
-	s.EqualValues(1, acc.ID)
-	s.EqualValues(1, acc.UserID)
-	s.EqualValues("account01", acc.Name)
-	s.EqualValues(2000, acc.Balance)
+	s.EqualValues(len(arrResponse), 2)
+}
+
+func (s *MockTestSuite) Test_ListUserAccount_Failed() {
+	s.r.On("ListAccounts", mock.Anything, mock.Anything).
+		Return(nil, gorm.ErrRecordNotFound).Once()
+
+	client := http.Client{}
+	req, err := http.NewRequest(http.MethodGet, GenURI("/users/1/accounts"), nil)
+	s.Require().NoError(err)
+	resp, err := client.Do(req)
+	s.Require().NoError(err)
+	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
+
+	var errResponse errorz.ErrResponse
+	err = json.Unmarshal(body, &errResponse)
+	s.Require().NoError(err)
+
+	s.EqualValues(10001, errResponse.ErrorCode)
+	s.EqualValues("record not found", errResponse.Description)
 }

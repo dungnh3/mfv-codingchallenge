@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -49,7 +48,6 @@ func newServerCmd() *cobra.Command {
 		RunE: func(*cobra.Command, []string) error {
 			var err error
 			conf := config.Load()
-			fmt.Println(conf.MySQL)
 			db := pkgdb.ConnectMySQL(conf.MySQL)
 			repo := mysql.New(db, conf)
 			logger := l.New()

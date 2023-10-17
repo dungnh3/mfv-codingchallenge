@@ -1,26 +1,26 @@
-start transaction;
+START TRANSACTION;
 
-create table users
+CREATE TABLE users
 (
-    id         bigint AUTO_INCREMENT PRIMARY KEY,
-    name       varchar(64)                         NOT NULL,
-    status     varchar(16)                         NOT NULL,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    name       VARCHAR(64)                         NOT NULL,
+    status     VARCHAR(16)                         NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
-create table user_accounts
+CREATE TABLE user_accounts
 (
-    id         bigint AUTO_INCREMENT PRIMARY KEY,
-    user_id    bigint                              NOT NULL,
-    name       varchar(64)                         NOT NULL,
-    status     varchar(16)                         NOT NULL,
-    balance    double precision                    NOT NULL,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT                                 NOT NULL,
+    name       VARCHAR(64)                         NOT NULL,
+    status     VARCHAR(16)                         NOT NULL,
+    balance DOUBLE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
-alter table user_accounts
-    add constraint user_accounts_user_id_fkey foreign key (user_id) REFERENCES users (id);
+ALTER TABLE user_accounts
+    ADD CONSTRAINT user_accounts_user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id);
 
-commit;
+COMMIT;

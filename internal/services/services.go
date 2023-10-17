@@ -10,11 +10,11 @@ import (
 )
 
 type (
-	registerUserRequest struct {
+	RegisterUserRequest struct {
 		Name string `json:"name" binding:"required"`
 	}
 
-	registerUserResponse struct {
+	RegisterUserResponse struct {
 		ID   int64  `json:"id"`
 		Name string `json:"name"`
 	}
@@ -25,11 +25,11 @@ type (
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param register body registerUserRequest true "register a new user"
-// @Success 200 {object} registerUserResponse
+// @Param register body RegisterUserRequest true "register a new user"
+// @Success 200 {object} RegisterUserResponse
 // @Router /users/register [post]
 func (s *Server) registerUser(ctx *gin.Context) {
-	var request registerUserRequest
+	var request RegisterUserRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorz.NewErrResponse(errorz.ErrBadParamInput, err.Error()))
 		return
@@ -49,7 +49,7 @@ func (s *Server) registerUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorz.NewErrResponse(err))
 		return
 	}
-	response := registerUserResponse{
+	response := RegisterUserResponse{
 		ID:   user.ID,
 		Name: user.Name,
 	}
@@ -91,11 +91,11 @@ func (s *Server) getUser(ctx *gin.Context) {
 }
 
 type (
-	createAccountRequest struct {
+	CreateAccountRequest struct {
 		Name string `json:"name" binding:"required"`
 	}
 
-	createAccountResponse struct {
+	CreateAccountResponse struct {
 		ID     int64  `json:"id"`
 		UserID int64  `json:"user_id"`
 		Name   string `json:"name"`
@@ -107,8 +107,8 @@ type (
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param register body createAccountRequest true "create a new account"
-// @Success 200 {object} createAccountResponse
+// @Param register body CreateAccountRequest true "create a new account"
+// @Success 200 {object} CreateAccountResponse
 // @Router /users/:id/accounts [post]
 func (s *Server) createAccount(ctx *gin.Context) {
 	id, err := getIDFromPath(ctx)
@@ -117,7 +117,7 @@ func (s *Server) createAccount(ctx *gin.Context) {
 		return
 	}
 
-	var request createAccountRequest
+	var request CreateAccountRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorz.NewErrResponse(errorz.ErrBadParamInput, err.Error()))
 		return
@@ -138,7 +138,7 @@ func (s *Server) createAccount(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorz.NewErrResponse(err))
 		return
 	}
-	response := createAccountResponse{
+	response := CreateAccountResponse{
 		ID:     acc.ID,
 		UserID: acc.UserID,
 		Name:   acc.Name,

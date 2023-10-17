@@ -37,7 +37,8 @@ To start the SampleService Server, use the following command:
 ```bash
 go run main.go server
 ```
-The service will be available at http://localhost:9090
+- The service will be available at http://localhost:9090
+- Swagger docs: http://localhost:9090/swagger/index.html#/
 
 ### API Endpoints
 - `GET /users/:id`: Retrieve user information by id

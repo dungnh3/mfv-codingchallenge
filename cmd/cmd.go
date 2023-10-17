@@ -3,7 +3,7 @@ package cmd
 import "github.com/spf13/cobra"
 
 var usage = `mfv-coding-challenge
-	- server: start trade server
+	- server: start server
 @money-forward-vn
 `
 
